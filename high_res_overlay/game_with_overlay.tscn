@@ -1,0 +1,134 @@
+[gd_scene load_steps=11 format=3 uid="uid://u1k3kfeyt28w"]
+
+[ext_resource type="Script" uid="uid://8b2hox6led53" path="res://high_res_overlay/game_with_overlay.gd" id="1_54ujk"]
+[ext_resource type="Texture2D" uid="uid://dygsygqkii6ws" path="res://sprites/scroll.png" id="2_auqr8"]
+[ext_resource type="PackedScene" uid="uid://cikuec640cww1" path="res://high_res_overlay/progress_tracker.tscn" id="2_xp52t"]
+[ext_resource type="FontFile" uid="uid://c3jjc5ng7svww" path="res://fonts/P39.ttf" id="4_yqrto"]
+[ext_resource type="FontFile" uid="uid://dca6bst6w7vib" path="res://fonts/DIOGENES.ttf" id="5_qpuge"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_auqr8"]
+texture = ExtResource("2_auqr8")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="Animation" id="Animation_xp52t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../..:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(4, 24)]
+}
+
+[sub_resource type="Animation" id="Animation_auqr8"]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../..:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(80, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_yqrto"]
+resource_name = "fade_out"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../..:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(80, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yqrto"]
+_data = {
+&"RESET": SubResource("Animation_xp52t"),
+&"fade_in": SubResource("Animation_auqr8"),
+&"fade_out": SubResource("Animation_yqrto")
+}
+
+[node name="GameWithOverlay" type="Node2D" node_paths=PackedStringArray("viewport_container", "viewport", "canvas_layer")]
+process_mode = 3
+script = ExtResource("1_54ujk")
+viewport_container = NodePath("SubViewportContainer")
+viewport = NodePath("SubViewportContainer/SubViewport")
+canvas_layer = NodePath("CanvasLayer")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+texture_filter = 1
+offset_right = 640.0
+offset_bottom = 360.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(640, 360)
+render_target_update_mode = 4
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ProgressTracker" parent="CanvasLayer" instance=ExtResource("2_xp52t")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -116.0
+offset_right = -116.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollPanel" type="PanelContainer" parent="CanvasLayer"]
+texture_filter = 1
+offset_right = 4.0
+offset_bottom = 24.0
+scale = Vector2(10, 10)
+theme_override_styles/panel = SubResource("StyleBoxTexture_auqr8")
+
+[node name="ControlToResizeText" type="Control" parent="CanvasLayer/ScrollPanel"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 13.4)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ScrollText" type="RichTextLabel" parent="CanvasLayer/ScrollPanel/ControlToResizeText"]
+clip_contents = false
+layout_mode = 2
+offset_right = 757.0
+offset_bottom = 134.0
+scale = Vector2(0.1, 0.1)
+theme_override_fonts/normal_font = ExtResource("4_yqrto")
+theme_override_fonts/bold_font = ExtResource("5_qpuge")
+theme_override_font_sizes/normal_font_size = 46
+theme_override_font_sizes/bold_font_size = 36
+bbcode_enabled = true
+text = "Do not refrain from questioning things"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+visible_characters_behavior = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/ScrollPanel/ControlToResizeText/ScrollText"]
+libraries = {
+&"": SubResource("AnimationLibrary_yqrto")
+}

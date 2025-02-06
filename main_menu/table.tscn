@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=3 uid="uid://d4knqd1ntmf3v"]
+
+[ext_resource type="Script" uid="uid://diu4w3eehach8" path="res://main_menu/table.gd" id="1_v5i0k"]
+[ext_resource type="PackedScene" uid="uid://c533q8qqsm22c" path="res://main_menu/table_row.tscn" id="2_v5i0k"]
+[ext_resource type="FontFile" uid="uid://dqi1s6vr0x07u" path="res://fonts/ROMANUS.otf" id="4_vjl2i"]
+
+[sub_resource type="Theme" id="Theme_vjl2i"]
+default_font = ExtResource("4_vjl2i")
+default_font_size = 20
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+script = ExtResource("1_v5i0k")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TableRow" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_v5i0k")]
+layout_mode = 2
+focus_mode = 0
+seed_val = "Seed"
+high_score_val = "High Score"
+time_val = "Time"
+
+[node name="SeedLabel" parent="MarginContainer/HBoxContainer/TableRow/TableRow" index="0"]
+theme_override_font_sizes/font_size = 26
+text = "Seed"
+
+[node name="HighScoreLabel" parent="MarginContainer/HBoxContainer/TableRow/TableRow" index="1"]
+theme_override_fonts/font = ExtResource("4_vjl2i")
+theme_override_font_sizes/font_size = 26
+text = "High Score"
+
+[node name="TimeLabel" parent="MarginContainer/HBoxContainer/TableRow/TableRow" index="2"]
+theme_override_fonts/font = ExtResource("4_vjl2i")
+theme_override_font_sizes/font_size = 26
+text = "Time"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+follow_focus = true
+
+[node name="TableRows" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="MarginContainer"]
+theme = SubResource("Theme_vjl2i")
+dialog_text = "Delete row?"
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="confirmed" from="MarginContainer/ConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]
+
+[editable path="MarginContainer/HBoxContainer/TableRow"]

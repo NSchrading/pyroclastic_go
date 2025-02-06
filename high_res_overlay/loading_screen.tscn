@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://e76xiqm8yiar"]
+
+[ext_resource type="Script" uid="uid://cwnkcvuonipi0" path="res://high_res_overlay/loading_screen.gd" id="1_m7hh6"]
+
+[node name="Control" type="Control" node_paths=PackedStringArray("progress_bar")]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_m7hh6")
+progress_bar = NodePath("PanelContainer/CenterContainer/VBoxContainer/ProgressBar")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="ColorRect" type="ColorRect" parent="PanelContainer"]
+layout_mode = 2
+color = Color(0.305882, 0.678431, 0.960784, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.844489, 0.549298, 0.371502, 1)
+theme_override_font_sizes/font_size = 64
+text = "Loading ..."
+
+[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_font_sizes/font_size = 32

@@ -1,0 +1,81 @@
+[gd_scene load_steps=6 format=3 uid="uid://c2u1crw6i8f73"]
+
+[ext_resource type="FontFile" uid="uid://dca6bst6w7vib" path="res://fonts/DIOGENES.ttf" id="1_h6w7d"]
+[ext_resource type="Script" uid="uid://5jfikbffnceh" path="res://game/ghost_text.gd" id="1_k7v17"]
+
+[sub_resource type="Animation" id="Animation_bhd7r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qpuge"]
+resource_name = "speak"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_y8l3u"]
+_data = {
+&"RESET": SubResource("Animation_bhd7r"),
+&"speak": SubResource("Animation_qpuge")
+}
+
+[node name="GhostText" type="RichTextLabel"]
+offset_right = 200.0
+offset_bottom = 40.0
+theme_override_fonts/normal_font = ExtResource("1_h6w7d")
+theme_override_font_sizes/normal_font_size = 28
+text = "test text"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+script = ExtResource("1_k7v17")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_y8l3u")
+}

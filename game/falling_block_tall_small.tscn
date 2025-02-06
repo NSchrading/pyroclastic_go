@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://bn7aunakos54p"]
+
+[ext_resource type="Script" uid="uid://dqkato3onhlsj" path="res://game/falling_block.gd" id="1_tejbv"]
+[ext_resource type="Texture2D" uid="uid://cnq8byh6t04x0" path="res://sprites/blocks/boulder_tall.png" id="2_78l6m"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_wxkqo"]
+absorbent = true
+
+[node name="WallBody" type="AnimatableBody2D" node_paths=PackedStringArray("sprite")]
+texture_filter = 1
+collision_layer = 31
+collision_mask = 5
+physics_material_override = SubResource("PhysicsMaterial_wxkqo")
+sync_to_physics = false
+script = ExtResource("1_tejbv")
+stair_step_size = 8.0
+health_points = 30.0
+sprite = NodePath("Sprite2D")
+
+[node name="CollisionShape" type="CollisionPolygon2D" parent="."]
+scale = Vector2(1.5, 1.5)
+polygon = PackedVector2Array(-8, -32, 8, -32, 8, -28, 12, -28, 12, -24, 16, -24, 16, 24, 12, 24, 12, 28, 8, 28, 8, 32, -16, 32, -16, -24, -12, -24, -12, -28, -8, -28)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(6, 6)
+texture = ExtResource("2_78l6m")

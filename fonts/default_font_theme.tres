@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cp8q24ofw3yfc"]
+
+[ext_resource type="FontFile" uid="uid://dqi1s6vr0x07u" path="res://fonts/ROMANUS.otf" id="1_vl15f"]
+
+[resource]
+default_font = ExtResource("1_vl15f")
+default_font_size = 32

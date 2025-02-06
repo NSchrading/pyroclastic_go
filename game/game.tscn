@@ -1,0 +1,655 @@
+[gd_scene load_steps=53 format=3 uid="uid://bnt5cm61ge3mq"]
+
+[ext_resource type="Script" uid="uid://7gjxr861qrff" path="res://game/game.gd" id="1_nrxfs"]
+[ext_resource type="PackedScene" uid="uid://cnntvsgfbptvx" path="res://game/falling_block_small.tscn" id="2_adruf"]
+[ext_resource type="PackedScene" uid="uid://b3e8ijo0o542s" path="res://game/falling_block_medium.tscn" id="3_7wvs7"]
+[ext_resource type="PackedScene" uid="uid://bn7aunakos54p" path="res://game/falling_block_tall_small.tscn" id="4_fjgnt"]
+[ext_resource type="PackedScene" uid="uid://clq18lnc0ru8r" path="res://game/jumper.tscn" id="5_6qght"]
+[ext_resource type="Texture2D" uid="uid://jmw0ab36e631" path="res://sprites/bg_close.png" id="5_faryd"]
+[ext_resource type="PackedScene" uid="uid://7wuexf7vhakv" path="res://game/column.tscn" id="5_r4hvm"]
+[ext_resource type="PackedScene" uid="uid://drvijy8bs57vx" path="res://game/staircase.tscn" id="6_v86we"]
+[ext_resource type="Script" uid="uid://4sl1x0xbxj4k" path="res://game/lava.gd" id="6_xf7ma"]
+[ext_resource type="PackedScene" uid="uid://bbkw3l8voqkgm" path="res://game/scroll.tscn" id="7_7sc4i"]
+[ext_resource type="Texture2D" uid="uid://b8relwweeu53x" path="res://sprites/volcano_bg.png" id="8_215e1"]
+[ext_resource type="Texture2D" uid="uid://dk0486um6lx0o" path="res://sprites/lava_flow.png" id="9_e8heu"]
+[ext_resource type="Shader" uid="uid://cq5fs1t4r2tnn" path="res://shaders/lava.gdshader" id="11_1lybq"]
+[ext_resource type="Texture2D" uid="uid://l0embp4vswtv" path="res://sprites/floor.png" id="12_677wc"]
+[ext_resource type="Texture2D" uid="uid://d8kbbxdta4hv" path="res://sprites/grass.png" id="13_o2ljk"]
+[ext_resource type="Texture2D" uid="uid://bm64d7ryr74sw" path="res://sprites/dust.png" id="16_80cx4"]
+[ext_resource type="Shader" uid="uid://dejadrwyr77vd" path="res://shaders/cloud_olympus.gdshader" id="18_boyg6"]
+[ext_resource type="Texture2D" uid="uid://bgvcycrf5kd34" path="res://sprites/cloud_olympus.png" id="19_boyg6"]
+
+[sub_resource type="Animation" id="Animation_boyg6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(640, 100)]
+}
+
+[sub_resource type="Animation" id="Animation_rvswv"]
+resource_name = "lava_flow"
+length = 240.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 240),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(640, 110), Vector2(640, 400)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e36ub"]
+_data = {
+&"RESET": SubResource("Animation_boyg6"),
+&"lava_flow": SubResource("Animation_rvswv")
+}
+
+[sub_resource type="Curve" id="Curve_rvswv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_boyg6"]
+curve = SubResource("Curve_rvswv")
+
+[sub_resource type="Curve" id="Curve_80cx4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.329412, 0.595506), 0.0, 0.0, 0, 0, Vector2(0.476471, 0.370787), 0.0, 0.0, 0, 0, Vector2(0.670588, 0.741573), 0.0, 0.0, 0, 0, Vector2(0.876471, 0.47191), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="CurveTexture" id="CurveTexture_e8heu"]
+curve = SubResource("Curve_80cx4")
+
+[sub_resource type="Curve" id="Curve_e36ub"]
+_data = [Vector2(0, 0.494382), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_hb5m1"]
+width = 32
+curve = SubResource("Curve_e36ub")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x5p1p"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 5.0
+initial_velocity_min = 20.0
+initial_velocity_max = 30.0
+angular_velocity_min = -10.0
+angular_velocity_max = -1.60933e-05
+gravity = Vector3(0, -3, 0)
+tangential_accel_min = 10.0
+tangential_accel_max = 20.0
+scale_min = 40.0
+scale_max = 40.0
+scale_curve = SubResource("CurveTexture_hb5m1")
+color = Color(0.423651, 0.423651, 0.42365, 1)
+alpha_curve = SubResource("CurveTexture_boyg6")
+emission_curve = SubResource("CurveTexture_e8heu")
+
+[sub_resource type="Curve" id="Curve_qhcbd"]
+_data = [Vector2(0, 0.505618), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rvswv"]
+width = 32
+curve = SubResource("Curve_qhcbd")
+
+[sub_resource type="Curve" id="Curve_vaj68"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_x5p1p"]
+width = 32
+curve = SubResource("Curve_vaj68")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xa8c5"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 20.0
+initial_velocity_min = 30.0
+initial_velocity_max = 40.0
+angular_velocity_min = -10.0
+angular_velocity_max = 9.99998
+gravity = Vector3(0, 9.81, 0)
+tangential_accel_min = -20.0
+tangential_accel_max = 20.0
+scale_min = 8.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_x5p1p")
+color = Color(0.87451, 0.443137, 0.14902, 1)
+emission_curve = SubResource("CurveTexture_rvswv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e8heu"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(320, 1, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 60, 0)
+linear_accel_min = -10.0
+linear_accel_max = 10.0
+damping_min = 20.0
+damping_max = 50.0
+scale_min = 0.25
+scale_max = 2.25
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_n3xvh"]
+distance = 32.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ln7ps"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pxxsx"]
+width = 32
+height = 32
+seamless = true
+noise = SubResource("FastNoiseLite_ln7ps")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v5r3g"]
+shader = ExtResource("11_1lybq")
+shader_parameter/glow_color = Color(1, 0.8, 0, 1)
+shader_parameter/ripple_color_deep = Color(0.824729, 0.317533, 1.15514e-06, 1)
+shader_parameter/ripple_color_mid_lava = Color(1, 0.5, 0, 1)
+shader_parameter/ripple_color_surface = Color(1, 1, 0, 1)
+shader_parameter/glow_intensity = 1.5
+shader_parameter/glow_radius = 0.5
+shader_parameter/ripple_scale = 1.0
+shader_parameter/ripple_speed = 0.5
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_pxxsx")
+shader_parameter/distort_scale = 0.5
+shader_parameter/distort_strength = 0.05
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_d6tdw"]
+
+[sub_resource type="Curve" id="Curve_boyg6"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.244444, 0.426966), 0.0, 0.0, 0, 0, Vector2(0.502222, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_e36ub"]
+width = 32
+curve = SubResource("Curve_boyg6")
+
+[sub_resource type="Curve" id="Curve_eb0n7"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.617925, 1), 0.0, 0.0, 0, 0, Vector2(0.693396, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_u8iv2"]
+width = 32
+curve = SubResource("Curve_eb0n7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_loe01"]
+lifetime_randomness = 0.2
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(360, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 30.0
+initial_velocity_min = 10.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 9, 0)
+damping_min = 0.1
+damping_max = 0.3
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_u8iv2")
+color = Color(1, 0.678431, 0, 1)
+emission_curve = SubResource("CurveTexture_e36ub")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k3c6j"]
+size = Vector2(640, 28.5)
+
+[sub_resource type="Animation" id="Animation_e36ub"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:zoom")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../ParallaxCanvasLayer/VolcanoBackground/VolcanoSmoke:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../ParallaxCanvasLayer/VolcanoBackground/VolcanoLava:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(221, 294)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../CanvasLayer/ColorRect:color")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.305882, 0.678431, 0.960784, 1)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../jumper/Exclamation:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../jumper:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(219, 315)]
+}
+
+[sub_resource type="Animation" id="Animation_e8heu"]
+resource_name = "erupt_animation"
+length = 2.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.966667, 1.03333, 1.1, 1.2, 1.3, 1.7),
+"transitions": PackedFloat32Array(0.2, 0.2, 0.01, 0.2, 0.01, 0.07, 0.1, 0.25, 0.1, 0.05, 0.1, 0.1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1), Vector2(4, 0), Vector2(1, 1), Vector2(4, 0), Vector2(-4, 0), Vector2(-1, 0), Vector2(0, 3), Vector2(0, -5), Vector2(8, 0), Vector2(-8, 0), Vector2(-7, 0), Vector2(7, 0), Vector2(-3, 0), Vector2(3, 0), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:zoom")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.2, 1.7),
+"transitions": PackedFloat32Array(20, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(4, 4), Vector2(4, 4), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../ParallaxCanvasLayer/VolcanoBackground/VolcanoSmoke:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../ParallaxCanvasLayer/VolcanoBackground/VolcanoLava:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(1.2, 1.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(221, 304), Vector2(0, 240)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../CanvasLayer/ColorRect:color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.23333, 2.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0.305882, 0.678431, 0.960784, 1), Color(0.305882, 0.678431, 0.960784, 1), Color(0.894118, 0.407843, 0.196078, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../jumper/Exclamation:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.3, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../jumper:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
+"transitions": PackedFloat32Array(1, 0.2, 0.2, 0.2, 0.2, 1, 0.2, 1, 1, 1),
+"update": 0,
+"values": [Vector2(219, 315), Vector2(214, 315), Vector2(224, 315), Vector2(214, 315), Vector2(214, 300), Vector2(214, 315), Vector2(224, 315), Vector2(219, 315), Vector2(214, 315), Vector2(224, 315)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hb5m1"]
+_data = {
+&"RESET": SubResource("Animation_e36ub"),
+&"erupt_animation": SubResource("Animation_e8heu")
+}
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_boyg6"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_e36ub"]
+width = 256
+height = 256
+seamless = true
+noise = SubResource("FastNoiseLite_boyg6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e36ub"]
+shader = ExtResource("18_boyg6")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/glow_color = Color(0.7, 0.85, 1, 0.15)
+shader_parameter/alpha_threshold = 0.55
+shader_parameter/alpha_smoothness = 0.2
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_e36ub")
+shader_parameter/noise_scale = 2.0
+shader_parameter/noise_scroll_speed = Vector2(0.01, -0.04)
+shader_parameter/wind_speed = -0.02
+shader_parameter/distort_noise_scale = 1.0
+shader_parameter/distort_speed = 0.03
+shader_parameter/distort_strength = 0.05
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_boyg6"]
+size = Vector2(676, 117.5)
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("jumper", "wall_timer", "lava", "background_rect")]
+process_mode = 1
+script = ExtResource("1_nrxfs")
+jumper = NodePath("jumper")
+wall_timer = NodePath("SpawnTimer")
+falling_block_small = ExtResource("2_adruf")
+falling_block_medium = ExtResource("3_7wvs7")
+falling_block_tall_small = ExtResource("4_fjgnt")
+falling_column = ExtResource("5_r4hvm")
+falling_staircase = ExtResource("6_v86we")
+scroll = ExtResource("7_7sc4i")
+lava = NodePath("Lava")
+background_rect = NodePath("CanvasLayer/ColorRect")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -10
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.305882, 0.678431, 0.960784, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ParallaxCanvasLayer" type="CanvasLayer" parent="."]
+layer = -5
+follow_viewport_enabled = true
+
+[node name="VolcanoBackground" type="Parallax2D" parent="ParallaxCanvasLayer"]
+scroll_scale = Vector2(0.01, 0.01)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxCanvasLayer/VolcanoBackground"]
+texture_filter = 1
+scale = Vector2(10, 10)
+texture = ExtResource("8_215e1")
+centered = false
+
+[node name="Control" type="Control" parent="ParallaxCanvasLayer/VolcanoBackground"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 100.0
+
+[node name="LavaFlow" type="Sprite2D" parent="ParallaxCanvasLayer/VolcanoBackground/Control"]
+texture_filter = 1
+scale = Vector2(10, 10)
+texture = ExtResource("9_e8heu")
+centered = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ParallaxCanvasLayer/VolcanoBackground/Control/LavaFlow"]
+libraries = {
+&"": SubResource("AnimationLibrary_e36ub")
+}
+
+[node name="VolcanoSmoke" type="GPUParticles2D" parent="ParallaxCanvasLayer/VolcanoBackground"]
+texture_filter = 1
+position = Vector2(170, 101)
+emitting = false
+amount = 200
+lifetime = 8.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_x5p1p")
+
+[node name="VolcanoLava" type="GPUParticles2D" parent="ParallaxCanvasLayer/VolcanoBackground"]
+texture_filter = 1
+position = Vector2(170, 107)
+emitting = false
+amount = 50
+lifetime = 8.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_xa8c5")
+
+[node name="CloudBackground" type="Parallax2D" parent="ParallaxCanvasLayer"]
+scroll_scale = Vector2(0.2, 0.2)
+repeat_size = Vector2(640, 360)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxCanvasLayer/CloudBackground"]
+self_modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+scale = Vector2(20, 20)
+texture = ExtResource("5_faryd")
+centered = false
+
+[node name="AshLayer" type="CanvasLayer" parent="."]
+layer = -3
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="AshLayer"]
+texture_filter = 1
+position = Vector2(320, 0)
+emitting = false
+amount = 1000
+texture = ExtResource("16_80cx4")
+lifetime = 30.0
+process_material = SubResource("ParticleProcessMaterial_e8heu")
+
+[node name="jumper" parent="." instance=ExtResource("5_6qght")]
+position = Vector2(219, 315)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 10.0
+
+[node name="Lava" type="Area2D" parent="."]
+z_index = 1
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("6_xf7ma")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lava"]
+position = Vector2(320, 720)
+shape = SubResource("WorldBoundaryShape2D_n3xvh")
+
+[node name="LavaSprite" type="Sprite2D" parent="Lava"]
+material = SubResource("ShaderMaterial_v5r3g")
+position = Vector2(320, 720)
+scale = Vector2(640, 32)
+texture = SubResource("CanvasTexture_d6tdw")
+centered = false
+offset = Vector2(-0.5, -1)
+region_rect = Rect2(1920, 64, 0, 0)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Lava"]
+position = Vector2(320, 688)
+amount = 200
+lifetime = 1.5
+draw_order = 0
+process_material = SubResource("ParticleProcessMaterial_loe01")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+texture_filter = 1
+position = Vector2(320, 360)
+collision_layer = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(0, 1.25)
+shape = SubResource("RectangleShape2D_k3c6j")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor"]
+texture_repeat = 2
+position = Vector2(8.5, 0)
+scale = Vector2(1.02656, 1)
+texture = ExtResource("12_677wc")
+region_enabled = true
+region_rect = Rect2(32, 32, 640, 32)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(320, 440)
+scale = Vector2(4, 4)
+texture = ExtResource("13_o2ljk")
+region_enabled = true
+region_rect = Rect2(32, 32, 170, 32)
+
+[node name="CinematicCamera2D" type="Camera2D" parent="."]
+position = Vector2(221, 294)
+limit_left = 0
+limit_right = 640
+
+[node name="CinematicAnimationPlayer" type="AnimationPlayer" parent="CinematicCamera2D"]
+libraries = {
+&"": SubResource("AnimationLibrary_hb5m1")
+}
+
+[node name="CloudOlympus" type="Area2D" parent="."]
+visible = false
+texture_filter = 1
+collision_layer = 0
+collision_mask = 128
+monitoring = false
+monitorable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="CloudOlympus"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_e36ub")
+position = Vector2(320, 20)
+scale = Vector2(40, 40)
+texture = ExtResource("19_boyg6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CloudOlympus"]
+position = Vector2(316, 58.25)
+shape = SubResource("RectangleShape2D_boyg6")
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="area_entered" from="Lava" to="." method="_on_lava_area_entered"]
+[connection signal="body_entered" from="Lava" to="." method="_on_lava_body_entered"]
+[connection signal="body_entered" from="CloudOlympus" to="." method="_on_cloud_olympus_body_entered"]
+
+[editable path="jumper"]

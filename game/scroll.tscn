@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://bbkw3l8voqkgm"]
+
+[ext_resource type="Script" uid="uid://dw6gxabjrcxgo" path="res://game/scroll.gd" id="1_xwqay"]
+[ext_resource type="Texture2D" uid="uid://dygsygqkii6ws" path="res://sprites/scroll.png" id="2_xwqay"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xwqay"]
+size = Vector2(8, 14)
+
+[node name="Node2D" type="Sprite2D"]
+script = ExtResource("1_xwqay")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_xwqay")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_xwqay")
+
+[node name="EffectTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="EffectTimer" to="." method="_on_effect_timer_timeout"]

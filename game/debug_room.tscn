@@ -1,0 +1,102 @@
+[gd_scene load_steps=13 format=3 uid="uid://bm6fxml8djcgd"]
+
+[ext_resource type="Script" uid="uid://docoqho1jd7ik" path="res://game/debug_room.gd" id="1_2pxxl"]
+[ext_resource type="PackedScene" uid="uid://clq18lnc0ru8r" path="res://game/jumper.tscn" id="2_5sq00"]
+[ext_resource type="Texture2D" uid="uid://l0embp4vswtv" path="res://sprites/floor.png" id="2_cwiw4"]
+[ext_resource type="PackedScene" uid="uid://cnntvsgfbptvx" path="res://game/falling_block_small.tscn" id="3_1cgho"]
+[ext_resource type="PackedScene" uid="uid://b3e8ijo0o542s" path="res://game/falling_block_medium.tscn" id="4_lbbiq"]
+[ext_resource type="PackedScene" uid="uid://bn7aunakos54p" path="res://game/falling_block_tall_small.tscn" id="5_jnj1k"]
+[ext_resource type="PackedScene" uid="uid://7wuexf7vhakv" path="res://game/column.tscn" id="6_jioui"]
+[ext_resource type="PackedScene" uid="uid://drvijy8bs57vx" path="res://game/staircase.tscn" id="8_yya8t"]
+[ext_resource type="PackedScene" uid="uid://yswmsrnarvbp" path="res://game/ghost.tscn" id="9_f6wo6"]
+[ext_resource type="PackedScene" uid="uid://bbkw3l8voqkgm" path="res://game/scroll.tscn" id="10_abpr1"]
+
+[sub_resource type="GDScript" id="GDScript_f6wo6"]
+script/source = "extends SubViewport
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ssylo"]
+size = Vector2(642, 28.5)
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_2pxxl")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+texture_filter = 1
+offset_right = 640.0
+offset_bottom = 360.0
+scale = Vector2(3, 3)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(640, 360)
+render_target_update_mode = 4
+script = SubResource("GDScript_f6wo6")
+
+[node name="Floor" type="StaticBody2D" parent="SubViewportContainer/SubViewport"]
+texture_filter = 1
+position = Vector2(320, 360)
+collision_layer = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Floor"]
+position = Vector2(0, 1.25)
+shape = SubResource("RectangleShape2D_ssylo")
+
+[node name="Sprite2D" type="Sprite2D" parent="SubViewportContainer/SubViewport/Floor"]
+texture_repeat = 2
+texture = ExtResource("2_cwiw4")
+region_enabled = true
+region_rect = Rect2(32, 32, 640, 32)
+
+[node name="jumper" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_5sq00")]
+position = Vector2(131.667, 306)
+
+[node name="SmallBoulder" parent="SubViewportContainer/SubViewport" instance=ExtResource("3_1cgho")]
+position = Vector2(388.667, 37.6667)
+
+[node name="MediumBoulder" parent="SubViewportContainer/SubViewport" instance=ExtResource("4_lbbiq")]
+position = Vector2(575.333, 151.333)
+
+[node name="MediumBoulder2" parent="SubViewportContainer/SubViewport" instance=ExtResource("4_lbbiq")]
+position = Vector2(574.667, 280)
+
+[node name="TallSmall2" parent="SubViewportContainer/SubViewport" instance=ExtResource("5_jnj1k")]
+position = Vector2(259.333, 121.333)
+
+[node name="TallSmall" parent="SubViewportContainer/SubViewport" instance=ExtResource("5_jnj1k")]
+position = Vector2(250, 238.333)
+
+[node name="Column2" parent="SubViewportContainer/SubViewport" instance=ExtResource("6_jioui")]
+position = Vector2(427, 214.667)
+
+[node name="Column" parent="SubViewportContainer/SubViewport" instance=ExtResource("6_jioui")]
+position = Vector2(380.667, 212.333)
+
+[node name="Timer" type="Timer" parent="SubViewportContainer/SubViewport"]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="Stairs" parent="SubViewportContainer/SubViewport" instance=ExtResource("8_yya8t")]
+position = Vector2(402.333, 106.333)
+
+[node name="ghost" parent="SubViewportContainer/SubViewport" instance=ExtResource("9_f6wo6")]
+position = Vector2(295.333, 301)
+
+[node name="Scroll" parent="SubViewportContainer/SubViewport" instance=ExtResource("10_abpr1")]
+position = Vector2(340.333, 59.6667)
+
+[connection signal="timeout" from="SubViewportContainer/SubViewport/Timer" to="." method="_on_timer_timeout"]
