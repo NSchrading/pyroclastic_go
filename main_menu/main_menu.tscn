@@ -1,9 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://c0wwakjxlh3e0"]
+[gd_scene load_steps=18 format=3 uid="uid://c0wwakjxlh3e0"]
 
 [ext_resource type="Script" uid="uid://cp7edaijm31ev" path="res://main_menu/main_menu.gd" id="1_06t4h"]
 [ext_resource type="PackedScene" uid="uid://d4knqd1ntmf3v" path="res://main_menu/table.tscn" id="2_7vrkn"]
 [ext_resource type="Theme" uid="uid://cp8q24ofw3yfc" path="res://fonts/default_font_theme.tres" id="2_nlkkf"]
-[ext_resource type="Script" uid="uid://dkkjllrgnrmj" path="res://main_menu/license_container.gd" id="4_glbon"]
 [ext_resource type="Script" uid="uid://cqschvh167jbx" path="res://main_menu/on_screen_keyboard.gd" id="4_jix8l"]
 [ext_resource type="FontFile" uid="uid://c7g62n6vyc34w" path="res://fonts/Roman SD.ttf" id="5_glbon"]
 
@@ -17,12 +16,15 @@ fill_to = Vector2(0, 1)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jix8l"]
 texture = SubResource("GradientTexture2D_fu7sn")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fu7sn"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tl50"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Curve" id="Curve_jix8l"]
 _data = [Vector2(0, 0.505618), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -135,8 +137,8 @@ seed_submit_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/Marg
 score_table = NodePath("PanelContainer/MarginContainer/VBoxContainer/ScoreTable")
 on_screen_keyboard = NodePath("PanelContainer/MarginContainer/VBoxContainer/OnScreenKeyboard")
 open_source_licenses = NodePath("PanelContainer/MarginContainer/VBoxContainer/OpenSourceLicensesButton")
-license_container = NodePath("PanelContainer/MarginContainer/LicenseContainer")
-license_text = NodePath("PanelContainer/MarginContainer/LicenseContainer/MarginContainer/LicenseText")
+license_container = NodePath("PanelContainer/MarginContainer/AcceptDialog")
+license_text = NodePath("")
 title_text = NodePath("RichTextLabel")
 title_text_particles = NodePath("RichTextLabel/VolcanoLava")
 title_text_animation = NodePath("RichTextLabel/AnimationPlayer")
@@ -245,6 +247,7 @@ focus_previous = NodePath("../MarginContainer/HBoxContainer/RandomSeedInput")
 [node name="OpenSourceLicensesButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
+size_flags_vertical = 4
 focus_neighbor_left = NodePath("../ScoreTable")
 focus_neighbor_top = NodePath("../ScoreTable")
 focus_neighbor_right = NodePath("../NewGameButton")
@@ -255,29 +258,13 @@ theme = ExtResource("2_nlkkf")
 theme_override_font_sizes/font_size = 22
 text = "Open Source Licenses"
 
-[node name="LicenseContainer" type="PanelContainer" parent="PanelContainer/MarginContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_fu7sn")
-script = ExtResource("4_glbon")
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/LicenseContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="LicenseText" type="RichTextLabel" parent="PanelContainer/MarginContainer/LicenseContainer/MarginContainer"]
-clip_contents = false
-layout_mode = 2
-theme = ExtResource("2_nlkkf")
-theme_override_font_sizes/normal_font_size = 20
-fit_content = true
-autowrap_mode = 0
-horizontal_alignment = 1
+[node name="AcceptDialog" type="AcceptDialog" parent="PanelContainer/MarginContainer"]
+title = "Open Source Licenses"
+exclusive = false
+borderless = true
+keep_title_visible = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_6tl50")
+ok_button_text = "Close"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 layout_mode = 1

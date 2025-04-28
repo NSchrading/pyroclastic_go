@@ -443,6 +443,7 @@ func _set_scroll_text(scroll: Sprite2D):
 	text_to_display = text_to_display.replace(".", "[b].[/b]")
 	text_to_display = text_to_display.replace("(", "[b]([/b]")
 	text_to_display = text_to_display.replace(")", "[b])[/b]")
+	text_to_display = text_to_display.replace("?", "[b]?[/b]")
 	text_to_display = text_to_display.replace("8", "[b]8[/b]")
 	scroll_label.append_text("[color=%s]" % TranslationEffect.DEFAULT_COLOR + text_to_display + "[/color]")
 
