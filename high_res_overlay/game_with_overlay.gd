@@ -426,7 +426,13 @@ func animate_translation_effect(duration: float, original_text: String):
 
 
 func _set_scroll_text(scroll: Sprite2D):
-	if reading_scroll:
+	# game end text, make sure to display it
+	if 'well done' in scroll.scroll_text.to_lower():
+		scroll_animation_player.stop()
+		scroll_container.visible = false
+		scroll_animation_player.play("RESET")
+	# otherwise don't show the scroll if we're already reading another
+	elif reading_scroll:
 		return
 	reading_scroll = true
 	print('showing scroll')
