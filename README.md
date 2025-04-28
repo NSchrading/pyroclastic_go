@@ -4,7 +4,7 @@
 
 Recover lost knowledge as you escape the eruption of Mount Vesuvius. Get jumping!
 
-Reading ancient Greek scrolls billowing from the heavens as they are tossed from the library at Herculaneum will improve your jumps and temporarily reduce gravity.
+Ancient Greek scrolls billow from the heavens as they are tossed from the library at Herculaneum. Read them to improve your jumps and temporarily reduce gravity.
 
 ![Animated gif of a player jumping and hitting a scroll, revealing its contents](https://img.itch.zone/aW1nLzIwOTMwODc3LmdpZg==/original/Eulgrf.gif)
 

@@ -59,10 +59,9 @@ var reading_scroll = false
 var ghost_text_labels = []
 var translation_effect = null
 
-# scroll text is determined in game rather than in scroll node so we can have game-dependent
+# scroll text is determined here rather than in scroll node so we can have game-dependent
 # scroll text order
 var next_note = ""
-# TODO: more of these
 var scroll_wisdom = [
 	"Do not refrain from questioning things",
 	"There are atoms and the void",
@@ -327,10 +326,15 @@ func _on_game_over(max_height: int, time_to_max_height: float) -> void:
 
 
 func _process(_delta: float) -> void:
+	# This function handles window resize and node repositioning. I couldn't figure out the right
+	# combination of stretch mode and aspect project settings to keep the game pixel-perfect
+	# while allowing automatic resizing of the high-res ui, so I do it manually here. 
 	var window_size = get_window().size
 	var resolution_ratio = window_size / BASE_GAME_RESOLUTION
 	if resolution_ratio == Vector2i(0, 0):
 		resolution_ratio = Vector2(0.5, 0.5)
+		
+	# scale and reposition the viewport containing the main game
 	if viewport_container.scale.x != resolution_ratio.x:
 		viewport_container.scale = resolution_ratio
 	var viewport_size = Vector2i(Vector2(BASE_GAME_RESOLUTION) * Vector2(resolution_ratio))
@@ -338,11 +342,13 @@ func _process(_delta: float) -> void:
 	
 	var ui_ratio = Vector2(window_size) / BASE_UI_RESOLUTION
 
+	# scale main menu and text
 	if main_menu_instance != null:
 		main_menu_instance.menu_container.size = window_size
 		var title_text_ratio = min(ui_ratio.x, 1.0)
 		main_menu_instance.title_text.add_theme_font_size_override("normal_font_size", 46.0 * title_text_ratio)
 		
+	# scale loading screen
 	if loading_screen_instance != null:
 		loading_screen_instance.get_node("PanelContainer").size = window_size
 
@@ -364,6 +370,7 @@ func _process(_delta: float) -> void:
 		var scroll_size = scroll_container.scale * Vector2(NOMINAL_SCROLL_WIDTH, scroll_container.size.y + 10.0)
 		scroll_container.position = (window_size / 2.0) - (scroll_size / 2.0)
 
+		# scale and reposition ghost text if they are talking
 		if len(ghost_text_labels) > 0:
 			for ghost_text_label in ghost_text_labels.duplicate():
 				if is_instance_valid(ghost_text_label):

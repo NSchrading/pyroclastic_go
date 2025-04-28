@@ -121,7 +121,7 @@ _data = {
 &"fun_text": SubResource("Animation_qe12f")
 }
 
-[node name="MainMenu" type="Control" node_paths=PackedStringArray("menu_container", "new_game_button", "retry_button", "resume_button", "quit_button", "random_seed_input", "seed_submit_button", "score_table", "on_screen_keyboard", "open_source_licenses", "license_container", "license_text", "title_text", "title_text_particles", "title_text_animation")]
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("menu_container", "new_game_button", "retry_button", "resume_button", "quit_button", "random_seed_input", "seed_submit_button", "score_table", "on_screen_keyboard", "open_source_licenses", "license_container", "title_text", "title_text_particles", "title_text_animation")]
 layout_mode = 3
 anchors_preset = 0
 size_flags_horizontal = 3
@@ -138,7 +138,6 @@ score_table = NodePath("PanelContainer/MarginContainer/VBoxContainer/ScoreTable"
 on_screen_keyboard = NodePath("PanelContainer/MarginContainer/VBoxContainer/OnScreenKeyboard")
 open_source_licenses = NodePath("PanelContainer/MarginContainer/VBoxContainer/OpenSourceLicensesButton")
 license_container = NodePath("PanelContainer/MarginContainer/AcceptDialog")
-license_text = NodePath("")
 title_text = NodePath("RichTextLabel")
 title_text_particles = NodePath("RichTextLabel/VolcanoLava")
 title_text_animation = NodePath("RichTextLabel/AnimationPlayer")

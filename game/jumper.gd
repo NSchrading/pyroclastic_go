@@ -337,7 +337,6 @@ func apply_scroll_effect(scroll):
 	print('emitting scroll read')
 	num_scrolls_read += 1
 	scroll_read.emit(scroll)
-	# TODO: make different effects
 	if scroll.scroll_effect:
 		gravity_mult = 1.0
 		jump_velocity = max(jump_velocity - 10.0, MAX_JUMP_VELOCITY)
