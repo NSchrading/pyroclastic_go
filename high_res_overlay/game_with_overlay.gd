@@ -93,6 +93,10 @@ var scroll_wisdom = [
 	"What is the strangest thing to see? An aged tyrant",
 	"A sweet thing tasted too often is no longer sweet.",
 	"Naught without labor",
+	"Dwell on the beauty of life. Watch the stars, and see yourself running with them",
+	"If it is not right do not do it; if it is not true do not say it",
+	"To bear this worthily is good fortune",
+	"Love your nature and what it demands of you",
 ]
 
 
@@ -457,6 +461,7 @@ func _set_scroll_text(scroll: Sprite2D):
 	text_to_display = text_to_display.replace("(", "[b]([/b]")
 	text_to_display = text_to_display.replace(")", "[b])[/b]")
 	text_to_display = text_to_display.replace("?", "[b]?[/b]")
+	text_to_display = text_to_display.replace(";", "[b];[/b]")
 	text_to_display = text_to_display.replace("8", "[b]8[/b]")
 	scroll_label.append_text("[color=%s]" % TranslationEffect.DEFAULT_COLOR + text_to_display + "[/color]")
 
@@ -478,7 +483,7 @@ func _set_scroll_text(scroll: Sprite2D):
 			scroll_label.visible_ratio = 1.0
 			await get_tree().create_timer(0.5).timeout
 		
-		await animate_translation_effect(3.0, String(text_to_display))
+		await animate_translation_effect(3.5, String(text_to_display))
 
 		scroll_animation_player.play("fade_out")
 		await scroll_animation_player.animation_finished
