@@ -214,7 +214,7 @@ func spawn_block_wave():
 		var recent_block_y_offset = INF
 		if most_recently_spawned_block:
 			# and also try to make sure we don't accidentally spawn into another block
-			recent_block_y_offset = most_recently_spawned_block.global_position.y - block_size.y - 16
+			recent_block_y_offset = most_recently_spawned_block.global_position.y - block_size.y - 32
 		block_pos_y = min(recorded_block_pos_y, normal_spawn_y, recent_block_y_offset)
 		recorded_block_index += 1
 	else:
