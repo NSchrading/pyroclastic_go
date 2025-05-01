@@ -206,8 +206,6 @@ layout_mode = 2
 [node name="NewGameButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "Clear all recorded thymoeides and start a new game on the current seed."
-focus_neighbor_right = NodePath("../RetryButton")
-focus_neighbor_bottom = NodePath("../RetryButton")
 theme = ExtResource("2_nlkkf")
 text = "New Game"
 
@@ -215,8 +213,6 @@ text = "New Game"
 visible = false
 layout_mode = 2
 tooltip_text = "Retry the game on the current seed, keeping any past thymoeides."
-focus_neighbor_right = NodePath("../ResumeButton")
-focus_neighbor_bottom = NodePath("../ResumeButton")
 theme = ExtResource("2_nlkkf")
 text = "Retry"
 

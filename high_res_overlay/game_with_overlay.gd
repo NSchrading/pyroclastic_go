@@ -146,6 +146,7 @@ func set_seed(seed_val: String):
 	main_menu_instance.resume_button.visible = false
 	main_menu_instance.seed_submit_button.disabled = true
 	main_menu_instance.new_game_button.text = "New Game"
+	main_menu_instance.new_game_button.grab_focus()
 	main_menu_instance.button_container.move_child(main_menu_instance.new_game_button, 0)
 	
 
