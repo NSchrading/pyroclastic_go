@@ -118,6 +118,16 @@ func _ready() -> void:
 	main_menu_instance.title_text_animation.play("fun_text")
 
 
+func randomize_seed():
+	main_menu_instance.random_seed_input.text = GameGlobals.generate_random_seed()
+	main_menu_instance.randomize_seed_button.release_focus()
+	main_menu_instance.dice_animation.play("roll")
+	check_seed(main_menu_instance.random_seed_input.text)
+	await main_menu_instance.dice_animation.animation_finished
+	main_menu_instance.randomize_seed_button.grab_focus()
+
+
+
 func check_seed(seed_val: String):
 	main_menu_instance.seed_submit_button.disabled = (len(seed_val) != 5) or seed_val == GameGlobals.game_seed
 
@@ -133,7 +143,10 @@ func set_seed(seed_val: String):
 	GameGlobals.game_seed = seed_val
 	main_menu_instance.random_seed_input.text = GameGlobals.game_seed
 	main_menu_instance.retry_button.visible = false
+	main_menu_instance.resume_button.visible = false
 	main_menu_instance.seed_submit_button.disabled = true
+	main_menu_instance.new_game_button.text = "New Game"
+	main_menu_instance.button_container.move_child(main_menu_instance.new_game_button, 0)
 	
 
 func set_seed_from_button():
@@ -179,6 +192,13 @@ func open_menu() -> void:
 	main_menu_instance.retry_button.pressed.connect(retry_game)
 	main_menu_instance.retry_button.visible = attempts_on_seed > 0
 
+	if main_menu_instance.retry_button.visible:
+		main_menu_instance.new_game_button.text = "Clear history and retry"
+		main_menu_instance.button_container.move_child(main_menu_instance.new_game_button, 1)
+	else:
+		main_menu_instance.new_game_button.text = "New Game"
+		main_menu_instance.button_container.move_child(main_menu_instance.new_game_button, 0)
+
 	main_menu_instance.resume_button.pressed.connect(close_menu)
 	main_menu_instance.resume_button.visible = game != null
 
@@ -189,6 +209,8 @@ func open_menu() -> void:
 	main_menu_instance.random_seed_input.text_changed.connect(check_seed)
 	main_menu_instance.seed_submit_button.pressed.connect(set_seed_from_button)
 	
+	main_menu_instance.randomize_seed_button.pressed.connect(randomize_seed)
+
 	# always refresh the text of the seed input box
 	main_menu_instance.random_seed_input.text = GameGlobals.game_seed
 	

@@ -1,17 +1,19 @@
 extends Control
 
 @export var menu_container: PanelContainer
+@export var button_container: VBoxContainer
 @export var new_game_button: Button
 @export var retry_button: Button
 @export var resume_button: Button
 @export var quit_button: Button
 @export var random_seed_input: LineEdit
+@export var randomize_seed_button: TextureButton
+@export var dice_animation: AnimationPlayer
 @export var seed_submit_button: Button
 @export var score_table: Table
 @export var on_screen_keyboard: PanelContainer
 @export var open_source_licenses: Button
 @export var license_container: AcceptDialog
-@export var license_text: RichTextLabel
 @export var title_text: RichTextLabel
 @export var title_text_particles: GPUParticles2D
 @export var title_text_animation: AnimationPlayer

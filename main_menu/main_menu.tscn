@@ -1,9 +1,12 @@
-[gd_scene load_steps=18 format=3 uid="uid://c0wwakjxlh3e0"]
+[gd_scene load_steps=24 format=3 uid="uid://c0wwakjxlh3e0"]
 
 [ext_resource type="Script" uid="uid://cp7edaijm31ev" path="res://main_menu/main_menu.gd" id="1_06t4h"]
 [ext_resource type="PackedScene" uid="uid://d4knqd1ntmf3v" path="res://main_menu/table.tscn" id="2_7vrkn"]
 [ext_resource type="Theme" uid="uid://cp8q24ofw3yfc" path="res://fonts/default_font_theme.tres" id="2_nlkkf"]
+[ext_resource type="Texture2D" uid="uid://dvps1f32t0gai" path="res://sprites/dice.png" id="3_6tl50"]
+[ext_resource type="Texture2D" uid="uid://cojpta2jg8v3y" path="res://sprites/dice_press.png" id="4_ia84y"]
 [ext_resource type="Script" uid="uid://cqschvh167jbx" path="res://main_menu/on_screen_keyboard.gd" id="4_jix8l"]
+[ext_resource type="Texture2D" uid="uid://bu2sh0llrxnh" path="res://sprites/dice_focus.png" id="4_t6bnd"]
 [ext_resource type="FontFile" uid="uid://c7g62n6vyc34w" path="res://fonts/Roman SD.ttf" id="5_glbon"]
 
 [sub_resource type="Gradient" id="Gradient_7vrkn"]
@@ -15,6 +18,43 @@ fill_to = Vector2(0, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jix8l"]
 texture = SubResource("GradientTexture2D_fu7sn")
+
+[sub_resource type="Animation" id="Animation_ia84y"]
+resource_name = "roll"
+length = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="Animation" id="Animation_6at21"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_og6xe"]
+_data = {
+&"RESET": SubResource("Animation_6at21"),
+&"roll": SubResource("Animation_ia84y")
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tl50"]
 content_margin_left = 10.0
@@ -121,18 +161,21 @@ _data = {
 &"fun_text": SubResource("Animation_qe12f")
 }
 
-[node name="MainMenu" type="Control" node_paths=PackedStringArray("menu_container", "new_game_button", "retry_button", "resume_button", "quit_button", "random_seed_input", "seed_submit_button", "score_table", "on_screen_keyboard", "open_source_licenses", "license_container", "title_text", "title_text_particles", "title_text_animation")]
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("menu_container", "button_container", "new_game_button", "retry_button", "resume_button", "quit_button", "random_seed_input", "randomize_seed_button", "dice_animation", "seed_submit_button", "score_table", "on_screen_keyboard", "open_source_licenses", "license_container", "title_text", "title_text_particles", "title_text_animation")]
 layout_mode = 3
 anchors_preset = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_06t4h")
 menu_container = NodePath("PanelContainer")
+button_container = NodePath("PanelContainer/MarginContainer/VBoxContainer")
 new_game_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/NewGameButton")
 retry_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/RetryButton")
 resume_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/ResumeButton")
 quit_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/QuitButton")
 random_seed_input = NodePath("PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/RandomSeedInput")
+randomize_seed_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control/RandomizeSeedButton")
+dice_animation = NodePath("PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control/RandomizeSeedButton/AnimationPlayer")
 seed_submit_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SeedSubmitButton")
 score_table = NodePath("PanelContainer/MarginContainer/VBoxContainer/ScoreTable")
 on_screen_keyboard = NodePath("PanelContainer/MarginContainer/VBoxContainer/OnScreenKeyboard")
@@ -162,6 +205,7 @@ layout_mode = 2
 
 [node name="NewGameButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+tooltip_text = "Clear all recorded thymoeides and start a new game on the current seed."
 focus_neighbor_right = NodePath("../RetryButton")
 focus_neighbor_bottom = NodePath("../RetryButton")
 theme = ExtResource("2_nlkkf")
@@ -170,10 +214,11 @@ text = "New Game"
 [node name="RetryButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
+tooltip_text = "Retry the game on the current seed, keeping any past thymoeides."
 focus_neighbor_right = NodePath("../ResumeButton")
 focus_neighbor_bottom = NodePath("../ResumeButton")
 theme = ExtResource("2_nlkkf")
-text = "Retry With Same Seed"
+text = "Retry"
 
 [node name="ResumeButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
@@ -210,8 +255,8 @@ autowrap_mode = 0
 
 [node name="RandomSeedInput" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
-focus_neighbor_right = NodePath("../SeedSubmitButton")
-focus_neighbor_bottom = NodePath("../SeedSubmitButton")
+focus_neighbor_right = NodePath("../Control/RandomizeSeedButton")
+focus_neighbor_bottom = NodePath("../Control/RandomizeSeedButton")
 theme = ExtResource("2_nlkkf")
 theme_override_font_sizes/font_size = 24
 max_length = 5
@@ -219,8 +264,39 @@ context_menu_enabled = false
 emoji_menu_enabled = false
 select_all_on_focus = true
 
+[node name="Control" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="RandomizeSeedButton" type="TextureButton" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(16, 16)
+size_flags_vertical = 4
+focus_neighbor_right = NodePath("../../SeedSubmitButton")
+focus_neighbor_bottom = NodePath("../../SeedSubmitButton")
+texture_normal = ExtResource("3_6tl50")
+texture_pressed = ExtResource("4_ia84y")
+texture_focused = ExtResource("4_t6bnd")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control/RandomizeSeedButton"]
+libraries = {
+&"": SubResource("AnimationLibrary_og6xe")
+}
+
 [node name="SeedSubmitButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Change the seed of the game and get a new set of falling block spawns. Changing this will clear any thymoeides on the previous seed."
 theme = ExtResource("2_nlkkf")
 theme_override_font_sizes/font_size = 24
 disabled = true
