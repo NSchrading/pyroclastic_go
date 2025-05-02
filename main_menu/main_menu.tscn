@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://c0wwakjxlh3e0"]
+[gd_scene load_steps=60 format=3 uid="uid://c0wwakjxlh3e0"]
 
 [ext_resource type="Script" uid="uid://cp7edaijm31ev" path="res://main_menu/main_menu.gd" id="1_06t4h"]
 [ext_resource type="PackedScene" uid="uid://d4knqd1ntmf3v" path="res://main_menu/table.tscn" id="2_7vrkn"]
@@ -60,14 +60,19 @@ _data = {
 &"roll": SubResource("Animation_ia84y")
 }
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qvn4f"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ia84y"]
-bg_color = Color(0.327805, 0.645583, 0.777331, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-expand_margin_left = 4.0
-expand_margin_right = 4.0
+content_margin_left = 4.0
+content_margin_right = 4.0
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_qvn4f"]
 
@@ -565,8 +570,10 @@ focus_neighbor_right = NodePath("../../../ScoreTable")
 focus_neighbor_bottom = NodePath("../../../ScoreTable")
 theme = ExtResource("2_nlkkf")
 theme_override_constants/outline_size = 3
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qvn4f")
 theme_override_styles/normal = SubResource("StyleBoxFlat_ia84y")
 text = "Cloak Color"
+alignment = 0
 
 [node name="PopupPanel" type="PopupPanel" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton"]
 size = Vector2i(1356, 1008)
@@ -684,6 +691,8 @@ libraries = {
 &"": SubResource("AnimationLibrary_dy7ct")
 }
 
+[connection signal="mouse_entered" from="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton" to="." method="_on_color_picker_button_mouse_entered"]
+[connection signal="mouse_exited" from="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton" to="." method="_on_color_picker_button_mouse_exited"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton" to="." method="_on_color_picker_button_pressed"]
 [connection signal="color_changed" from="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer/ColorPicker" to="." method="_on_color_picker_color_changed"]
 [connection signal="focus_entered" from="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer/ColorPicker" to="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer/ColorPicker" method="_on_focus_entered"]

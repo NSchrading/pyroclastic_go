@@ -34,6 +34,8 @@ func _ready() -> void:
 	license_container.dialog_text += "P39: Created by Allan Loder; http://individual.utoronto.ca/atloder/uncialfonts.html\n"
 	license_container.dialog_text += "DIOGENES: Created by Apostrophic Labs; https://www.dafont.com/diogenes.font\n"
 	title_text_animation.play("fun_text")
+	var normal_style = color_picker_button.get_theme_stylebox("normal")
+	color_picker_button.add_theme_stylebox_override("hover", normal_style)
 
 
 func _on_open_source_licenses_button_pressed() -> void:
@@ -58,3 +60,11 @@ func set_cloak_color(color: Color) -> void:
 	var normal_style = color_picker_button.get_theme_stylebox("normal")
 	normal_style.bg_color = color
 	character_sprite.get_material().set_shader_parameter("cloak_color", color)
+
+
+func _on_color_picker_button_mouse_entered() -> void:
+	color_picker_button.modulate.a = 0.8
+
+
+func _on_color_picker_button_mouse_exited() -> void:
+	color_picker_button.modulate.a = 1.0
