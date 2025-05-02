@@ -364,6 +364,9 @@ func _process(_delta: float) -> void:
 	# while allowing automatic resizing of the high-res ui, so I do it manually here. 
 	var window_size = get_window().size
 	var resolution_ratio = window_size / BASE_GAME_RESOLUTION
+	# always keep the scaling square, using the minimum value to fit
+	var min_scale = min(resolution_ratio.x, resolution_ratio.y)
+	resolution_ratio = Vector2i(min_scale, min_scale)
 	if resolution_ratio == Vector2i(0, 0):
 		resolution_ratio = Vector2(0.5, 0.5)
 		
