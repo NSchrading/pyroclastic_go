@@ -45,6 +45,7 @@ var max_height = 0.0
 var time_to_max_height = 0.0
 var num_souls_released = 0
 var num_scrolls_read = 0
+var cloak_color = Color(0.682, 0.149, 0.11, 1.0)
 
 var input_lock_timer = 0.0
 const INPUT_LOCK_DURATION = 0.1
@@ -363,3 +364,8 @@ func _on_sprite_2d_animation_finished() -> void:
 		state = States.DEAD
 	elif state == States.JUMP_START:
 		state = States.JUMP_ASCENT
+
+
+func set_cloak_color(color: Color) -> void:
+	cloak_color = color
+	sprite.get_material().set_shader_parameter("cloak_color", cloak_color)

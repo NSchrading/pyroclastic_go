@@ -17,6 +17,10 @@ extends Control
 @export var title_text: RichTextLabel
 @export var title_text_particles: GPUParticles2D
 @export var title_text_animation: AnimationPlayer
+@export var color_picker_button: Button
+@export var color_picker_popup: PopupPanel
+@export var color_picker: ColorPicker
+@export var character_sprite: AnimatedSprite2D
 
 
 func _ready() -> void:
@@ -37,3 +41,20 @@ func _on_open_source_licenses_button_pressed() -> void:
 		license_container.popup_centered()
 	else:
 		license_container.hide()
+
+
+func _on_color_picker_button_pressed() -> void:
+	var color_button_pos = color_picker_button.get_global_rect()
+	color_button_pos.position.y += color_picker_button.size.y
+	color_picker_popup.popup(color_button_pos)
+	color_picker.grab_focus()
+
+
+func _on_color_picker_color_changed(color: Color) -> void:
+	set_cloak_color(color)
+
+
+func set_cloak_color(color: Color) -> void:
+	var normal_style = color_picker_button.get_theme_stylebox("normal")
+	normal_style.bg_color = color
+	character_sprite.get_material().set_shader_parameter("cloak_color", color)

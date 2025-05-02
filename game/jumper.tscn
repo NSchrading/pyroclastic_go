@@ -19,20 +19,21 @@ length = 16.0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_mefnt"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_iw5d4"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0bepn"]
 noise = SubResource("FastNoiseLite_mefnt")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f8vuj"]
 shader = ExtResource("2_ub16k")
 shader_parameter/Skin = ExtResource("3_arjby")
 shader_parameter/SkinDimension = Vector2(11, 6)
-shader_parameter/burn_noise = SubResource("NoiseTexture2D_iw5d4")
+shader_parameter/burn_noise = SubResource("NoiseTexture2D_0bepn")
 shader_parameter/burn_progress = 0.0
 shader_parameter/fire_thickness = 0.1
 shader_parameter/char_thickness = 0.05
 shader_parameter/fire_color = Color(1, 0.5, 0, 1)
 shader_parameter/brighter_fire_color = Color(1, 0.8, 0, 1)
 shader_parameter/char_color = Color(0.1, 0.1, 0.1, 1)
+shader_parameter/cloak_color = Color(0.682, 0.149, 0.11, 1)
 shader_parameter/noise_scale = 1.0
 shader_parameter/noise_speed = 0.03
 shader_parameter/distortion_strength = 0.025

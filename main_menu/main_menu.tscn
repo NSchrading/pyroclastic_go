@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://c0wwakjxlh3e0"]
+[gd_scene load_steps=59 format=3 uid="uid://c0wwakjxlh3e0"]
 
 [ext_resource type="Script" uid="uid://cp7edaijm31ev" path="res://main_menu/main_menu.gd" id="1_06t4h"]
 [ext_resource type="PackedScene" uid="uid://d4knqd1ntmf3v" path="res://main_menu/table.tscn" id="2_7vrkn"]
@@ -8,6 +8,10 @@
 [ext_resource type="Script" uid="uid://cqschvh167jbx" path="res://main_menu/on_screen_keyboard.gd" id="4_jix8l"]
 [ext_resource type="Texture2D" uid="uid://bu2sh0llrxnh" path="res://sprites/dice_focus.png" id="4_t6bnd"]
 [ext_resource type="FontFile" uid="uid://c7g62n6vyc34w" path="res://fonts/Roman SD.ttf" id="5_glbon"]
+[ext_resource type="Script" uid="uid://br4epnn8mld87" path="res://main_menu/color_picker.gd" id="6_6at21"]
+[ext_resource type="Shader" uid="uid://cwhicdop6fb7i" path="res://shaders/player_skin_with_fire.gdshader" id="7_qvn4f"]
+[ext_resource type="Texture2D" uid="uid://byfcb36l3d74j" path="res://sprites/character_skinmap.png" id="8_g1omr"]
+[ext_resource type="Texture2D" uid="uid://cej706mo1px8p" path="res://sprites/character.png" id="9_kwfav"]
 
 [sub_resource type="Gradient" id="Gradient_7vrkn"]
 colors = PackedColorArray(0.305882, 0.678431, 0.960784, 1, 0.415686, 0.584314, 0.152941, 1)
@@ -18,6 +22,21 @@ fill_to = Vector2(0, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jix8l"]
 texture = SubResource("GradientTexture2D_fu7sn")
+
+[sub_resource type="Animation" id="Animation_6at21"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_ia84y"]
 resource_name = "roll"
@@ -35,26 +54,260 @@ tracks/0/keys = {
 "values": [0.0, 6.28319]
 }
 
-[sub_resource type="Animation" id="Animation_6at21"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_og6xe"]
 _data = {
 &"RESET": SubResource("Animation_6at21"),
 &"roll": SubResource("Animation_ia84y")
 }
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ia84y"]
+bg_color = Color(0.327805, 0.645583, 0.777331, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+expand_margin_left = 4.0
+expand_margin_right = 4.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qvn4f"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_iw5d4"]
+noise = SubResource("FastNoiseLite_qvn4f")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g1omr"]
+shader = ExtResource("7_qvn4f")
+shader_parameter/Skin = ExtResource("8_g1omr")
+shader_parameter/SkinDimension = Vector2(11, 6)
+shader_parameter/burn_noise = SubResource("NoiseTexture2D_iw5d4")
+shader_parameter/burn_progress = 0.0
+shader_parameter/fire_thickness = 0.1
+shader_parameter/char_thickness = 0.05
+shader_parameter/fire_color = Color(1, 0.5, 0, 1)
+shader_parameter/brighter_fire_color = Color(1, 0.8, 0, 1)
+shader_parameter/char_color = Color(0.1, 0.1, 0.1, 1)
+shader_parameter/cloak_color = Color(0.682, 0.149, 0.11, 1)
+shader_parameter/noise_scale = 1.0
+shader_parameter/noise_speed = 0.03
+shader_parameter/distortion_strength = 0.025
+shader_parameter/bottom_distortion_strength = 0.02
+shader_parameter/fire_intensity_multiplier = 0.383
+shader_parameter/char_noise_intensity = 0.327
+shader_parameter/alpha_modification = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4kmm"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(544, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xt1hf"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(576, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cxw23"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(608, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_entnp"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(640, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n5alc"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(672, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h1vwn"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(704, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_82tm5"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vc0dr"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eysn0"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(64, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ksnbf"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(96, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ub16k"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(480, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gucjw"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(512, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xh41x"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(416, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tmygo"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(448, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jetm4"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(384, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hnb1h"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(736, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wpbos"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(128, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yheom"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(160, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_85mxg"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(192, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrapk"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(224, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xfpua"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(256, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_duetf"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(288, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_srsru"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(320, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6s1it"]
+atlas = ExtResource("9_kwfav")
+region = Rect2(352, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kwfav"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t4kmm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xt1hf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cxw23")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_entnp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n5alc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h1vwn")
+}],
+"loop": false,
+"name": &"crush",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_82tm5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vc0dr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eysn0")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_ksnbf")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ub16k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gucjw")
+}],
+"loop": true,
+"name": &"in_air",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xh41x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tmygo")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jetm4")
+}],
+"loop": false,
+"name": &"land",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hnb1h")
+}],
+"loop": true,
+"name": &"on_wall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wpbos")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yheom")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_85mxg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrapk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xfpua")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_duetf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_srsru")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6s1it")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 9.0
+}]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6at21"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_og6xe"]
+bg_color = Color(0.887, 0.377, 0.758, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tl50"]
 content_margin_left = 10.0
@@ -161,7 +414,7 @@ _data = {
 &"fun_text": SubResource("Animation_qe12f")
 }
 
-[node name="MainMenu" type="Control" node_paths=PackedStringArray("menu_container", "button_container", "new_game_button", "retry_button", "resume_button", "quit_button", "random_seed_input", "randomize_seed_button", "dice_animation", "seed_submit_button", "score_table", "on_screen_keyboard", "open_source_licenses", "license_container", "title_text", "title_text_particles", "title_text_animation")]
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("menu_container", "button_container", "new_game_button", "retry_button", "resume_button", "quit_button", "random_seed_input", "randomize_seed_button", "dice_animation", "seed_submit_button", "score_table", "on_screen_keyboard", "open_source_licenses", "license_container", "title_text", "title_text_particles", "title_text_animation", "color_picker_button", "color_picker_popup", "color_picker", "character_sprite")]
 layout_mode = 3
 anchors_preset = 0
 size_flags_horizontal = 3
@@ -184,6 +437,10 @@ license_container = NodePath("PanelContainer/MarginContainer/AcceptDialog")
 title_text = NodePath("RichTextLabel")
 title_text_particles = NodePath("RichTextLabel/VolcanoLava")
 title_text_animation = NodePath("RichTextLabel/AnimationPlayer")
+color_picker_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton")
+color_picker_popup = NodePath("PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel")
+color_picker = NodePath("PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer/ColorPicker")
+character_sprite = NodePath("PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer/MarginContainer/Sprite2D")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 self_modulate = Color(1, 1, 1, 0.784314)
@@ -293,10 +550,66 @@ libraries = {
 [node name="SeedSubmitButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 tooltip_text = "Change the seed of the game and get a new set of falling block spawns. Changing this will clear any thymoeides on the previous seed."
+focus_neighbor_right = NodePath("../ColorPickerButton")
+focus_neighbor_bottom = NodePath("../ColorPickerButton")
 theme = ExtResource("2_nlkkf")
 theme_override_font_sizes/font_size = 24
 disabled = true
 text = "Submit"
+
+[node name="ColorPickerButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+focus_neighbor_left = NodePath("../SeedSubmitButton")
+focus_neighbor_right = NodePath("../../../ScoreTable")
+focus_neighbor_bottom = NodePath("../../../ScoreTable")
+theme = ExtResource("2_nlkkf")
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ia84y")
+text = "Cloak Color"
+
+[node name="PopupPanel" type="PopupPanel" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton"]
+size = Vector2i(1356, 1008)
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1352.0
+offset_bottom = 1004.0
+theme_override_constants/margin_top = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 256)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer/MarginContainer"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_g1omr")
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_kwfav")
+animation = &"idle"
+autoplay = "idle"
+speed_scale = 1.5
+centered = false
+
+[node name="ColorPicker" type="ColorPicker" parent="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 2
+edit_alpha = false
+color_mode = 1
+picker_shape = 1
+can_add_swatches = false
+sampler_visible = false
+color_modes_visible = false
+hex_visible = false
+presets_visible = false
+script = ExtResource("6_6at21")
+style_normal = SubResource("StyleBoxEmpty_6at21")
+style_focus = SubResource("StyleBoxFlat_og6xe")
 
 [node name="OnScreenKeyboard" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer" node_paths=PackedStringArray("line_edit")]
 visible = false
@@ -371,4 +684,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_dy7ct")
 }
 
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton" to="." method="_on_color_picker_button_pressed"]
+[connection signal="color_changed" from="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer/ColorPicker" to="." method="_on_color_picker_color_changed"]
+[connection signal="focus_entered" from="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer/ColorPicker" to="PanelContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ColorPickerButton/PopupPanel/MarginContainer/HBoxContainer/ColorPicker" method="_on_focus_entered"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/OpenSourceLicensesButton" to="." method="_on_open_source_licenses_button_pressed"]

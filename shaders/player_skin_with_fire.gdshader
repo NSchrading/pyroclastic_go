@@ -14,6 +14,7 @@ uniform float char_thickness: hint_range(0.001, 0.2) = 0.1; // Thickness of the 
 uniform vec4 fire_color: source_color = vec4(1.0, 0.5, 0.0, 1.0); // Base fire color
 uniform vec4 brighter_fire_color: source_color = vec4(1.0, 0.8, 0.0, 1.0); // Brighter flickers
 uniform vec4 char_color: source_color = vec4(0.1, 0.1, 0.1, 1.0); // Base char color
+uniform vec4 cloak_color : source_color = vec4(0.682, 0.149, 0.11, 1.0);
 
 // Noise & Distortion Control
 uniform float noise_scale: hint_range(0.1, 10.0) = 1.0; // Scale for noise lookups
@@ -34,8 +35,22 @@ void fragment()
 	vec4 map = texture(TEXTURE, UV);
 	// Convert map RG values [0,1] to UV coordinates for the Skin texture
 	vec2 scaledUV = (map.rg * 255.0 + 0.5) / SkinDimension;
-	// Sample the actual skin color using the calculated UVs
-	vec4 original_color = texture(Skin, scaledUV);
+
+	// cloak color pixels are at 7x1 and 7x2 in skin map.
+	float x_offset = (7.5 / SkinDimension.x);
+	float y_offset_color_1 = (1.5 / SkinDimension.y);
+	float y_offset_color_2 = (2.5 / SkinDimension.y);
+	vec4 original_color;
+	if (abs(scaledUV.r - x_offset) < 0.001 && abs(scaledUV.g - y_offset_color_1) < 0.001) {
+		original_color = cloak_color;
+	}
+	else if (abs(scaledUV.r - x_offset) < 0.001 && abs(scaledUV.g - y_offset_color_2) < 0.001) {
+		original_color = cloak_color * 0.4;
+	}
+	else {
+		original_color = texture(Skin, scaledUV);
+	}
+
 	// Use the alpha from the UV map texture as the base mask for the final output
 	// This allows parts of the sprite using this shader to be inherently transparent.
 	float base_mask_alpha = map.a;

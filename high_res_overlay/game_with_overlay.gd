@@ -58,6 +58,7 @@ var attempts_on_seed = 0
 var reading_scroll = false
 var ghost_text_labels = []
 var translation_effect = null
+var cloak_color = Color(0.682, 0.149, 0.11, 1.0)
 
 # scroll text is determined here rather than in scroll node so we can have game-dependent
 # scroll text order
@@ -217,6 +218,10 @@ func open_menu() -> void:
 	
 	main_menu_instance.score_table.delete_row.connect(delete_seed_data)
 
+	main_menu_instance.set_cloak_color(cloak_color)
+	main_menu_instance.color_picker.color = cloak_color
+	main_menu_instance.color_picker.color_changed.connect(_set_cloak_color)
+
 
 func new_game() -> void:
 	print("new_game called")
@@ -241,6 +246,7 @@ func start_game() -> void:
 	_load_game_scene()
 	game.jumper.scroll_read.connect(_set_scroll_text)
 	game.jumper.ghost_last_words.connect(_set_ghost_text)
+	game.jumper.set_cloak_color(main_menu_instance.color_picker.color)
 	reading_scroll = false
 	attempts_on_seed += 1
 	close_menu()
@@ -615,3 +621,9 @@ func show_loading_screen(display: bool):
 func update_loading_progress(val: float):
 	if is_instance_valid(loading_screen_instance):
 		loading_screen_instance.progress_bar.value = val
+
+
+func _set_cloak_color(color: Color) -> void:
+	cloak_color = color
+	if game:
+		game.jumper.set_cloak_color(main_menu_instance.color_picker.color)
